@@ -59,33 +59,33 @@ const EMOJI_MAP: Record<string, string> = {
 const ALERT_TYPES = {
   note: {
     icon: 'ℹ️',
-    bg: 'bg-blue-50',
-    border: 'border-blue-200',
-    text: 'text-blue-800',
+    bg: 'bg-blue-50 dark:bg-blue-900',
+    border: 'border-blue-200 dark:border-blue-700',
+    text: 'text-blue-800 dark:text-blue-200',
   },
   tip: {
     icon: '💡',
-    bg: 'bg-green-50',
-    border: 'border-green-200',
-    text: 'text-green-800',
+    bg: 'bg-green-50 dark:bg-green-900',
+    border: 'border-green-200 dark:border-green-700',
+    text: 'text-green-800 dark:text-green-200',
   },
   important: {
     icon: '❗',
-    bg: 'bg-purple-50',
-    border: 'border-purple-200',
-    text: 'text-purple-800',
+    bg: 'bg-purple-50 dark:bg-purple-900',
+    border: 'border-purple-200 dark:border-purple-700',
+    text: 'text-purple-800 dark:text-purple-200',
   },
   warning: {
     icon: '⚠️',
-    bg: 'bg-yellow-50',
-    border: 'border-yellow-200',
-    text: 'text-yellow-800',
+    bg: 'bg-yellow-50 dark:bg-yellow-900',
+    border: 'border-yellow-200 dark:border-yellow-700',
+    text: 'text-yellow-800 dark:text-yellow-200',
   },
   caution: {
     icon: '🚨',
-    bg: 'bg-red-50',
-    border: 'border-red-200',
-    text: 'text-red-800',
+    bg: 'bg-red-50 dark:bg-red-900',
+    border: 'border-red-200 dark:border-red-700',
+    text: 'text-red-800 dark:text-red-200',
   },
 };
 
@@ -167,9 +167,9 @@ const processMarkdownContent = (content: string): string => {
   // Collapsible sections
   processed = processed.replace(
     /:::details\s+(.*?)\n([\s\S]*?):::/gim,
-    '<details class="my-4 border border-gray-200 rounded-lg overflow-hidden bg-white">' +
-      '<summary class="bg-gray-50 px-4 py-3 cursor-pointer font-medium text-gray-800 hover:bg-gray-100 transition-colors border-b border-gray-200">$1</summary>' +
-      '<div class="px-4 py-3 text-gray-700">$2</div></details>',
+    '<details class="my-4 border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden bg-white dark:bg-gray-800">' +
+      '<summary class="bg-gray-50 dark:bg-gray-700 px-4 py-3 cursor-pointer font-medium text-gray-800 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors border-b border-gray-200 dark:border-gray-600">$1</summary>' +
+      '<div class="px-4 py-3 text-gray-700 dark:text-gray-300">$2</div></details>',
   );
 
   // GitHub-style alerts
@@ -311,12 +311,12 @@ const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
 
   // Component definitions with shared styles
   const headingClasses = {
-    h1: 'text-3xl font-bold my-6 text-gray-900 group flex items-center border-b border-gray-200 pb-2',
-    h2: 'text-2xl font-semibold my-5 text-gray-900 group flex items-center border-b border-gray-200 pb-1',
-    h3: 'text-xl font-semibold my-4 text-gray-900 group flex items-center',
-    h4: 'text-lg font-semibold my-3 text-gray-900',
-    h5: 'text-base font-semibold my-3 text-gray-900',
-    h6: 'text-sm font-semibold my-3 text-gray-600 uppercase tracking-wide',
+    h1: 'text-3xl font-bold my-6 text-gray-900 dark:text-gray-100 group flex items-center border-b border-gray-200 dark:border-gray-700 pb-2',
+    h2: 'text-2xl font-semibold my-5 text-gray-900 dark:text-gray-100 group flex items-center border-b border-gray-200 dark:border-gray-700 pb-1',
+    h3: 'text-xl font-semibold my-4 text-gray-900 dark:text-gray-100 group flex items-center',
+    h4: 'text-lg font-semibold my-3 text-gray-900 dark:text-gray-100',
+    h5: 'text-base font-semibold my-3 text-gray-900 dark:text-gray-100',
+    h6: 'text-sm font-semibold my-3 text-gray-600 dark:text-gray-300 uppercase tracking-wide',
   };
 
   const createHeading =
@@ -344,7 +344,10 @@ const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
     h6: createHeading('h6'),
 
     p: ({ children, ...props }) => (
-      <p {...props} className="my-4 text-gray-700 leading-relaxed">
+      <p
+        {...props}
+        className="my-4 text-gray-700 dark:text-gray-300 leading-relaxed"
+      >
         {children}
       </p>
     ),
@@ -352,7 +355,7 @@ const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
     blockquote: ({ children, ...props }) => (
       <blockquote
         {...props}
-        className="border-l-3 border-blue-500 bg-blue-50 pl-5 pr-5 py-2 my-4 italic text-blue-800 rounded-r-2xl shadow-sm hover:shadow-md transition-shadow duration-200 "
+        className="border-l-3 border-blue-500 dark:border-blue-400 bg-blue-50 dark:bg-gray-800/40 pl-5 pr-5 py-2 my-4 italic text-blue-800 dark:text-blue-300 rounded-r-2xl shadow-sm hover:shadow-md transition-shadow duration-200"
       >
         <div className="relative z-10">{children}</div>
       </blockquote>
@@ -389,20 +392,20 @@ const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
       const language = className?.replace('language-', '') || 'text';
 
       return (
-        <div className="relative rounded-xl overflow-hidden shadow-lg border border-gray-800 bg-gray-900 my-6 group">
+        <div className="relative rounded-xl overflow-hidden shadow-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 my-6 group">
           {/* Header with language and copy button */}
-          <div className="flex items-center justify-between px-6 py-3 bg-gray-200 border-b border-gray-200">
+          <div className="flex items-center justify-between px-6 py-3 bg-gray-100 dark:bg-gray-700 border-b border-gray-200 dark:border-gray-600">
             <div className="flex items-center space-x-2">
               <div className="w-3 h-3 rounded-full bg-red-500"></div>
               <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
               <div className="w-3 h-3 rounded-full bg-green-500"></div>
-              <span className="text-xs font-semibold text-gray-600 uppercase">
+              <span className="text-xs font-semibold text-gray-600 dark:text-gray-300 uppercase">
                 {language}
               </span>
             </div>
             <div className="flex items-center space-x-2">
               <button
-                className="copy-code-btn bg-gray-200 hover:bg-gray-300 text-gray-700  text-xs px-4 py-2 rounded-lg transition-all duration-200 flex items-center space-x-2 hover:scale-105 shadow-sm hover:shadow-md"
+                className="copy-code-btn bg-gray-200 dark:bg-gray-600 hover:bg-gray-300 dark:hover:bg-gray-500 text-gray-700 dark:text-gray-200 text-xs px-4 py-2 rounded-lg transition-all duration-200 flex items-center space-x-2 hover:scale-105 shadow-sm hover:shadow-md"
                 data-code={codeText}
                 aria-label="Copy code to clipboard"
               >
@@ -421,15 +424,15 @@ const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
                 </svg>
                 <span className="font-medium">Copy</span>
               </button>
-              <div className="copy-success-message hidden items-center space-x-2 bg-green-100 text-green-800 text-xs px-4 py-2 rounded-lg border border-green-200">
+              <div className="copy-success-message hidden items-center space-x-2 bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 text-xs px-4 py-2 rounded-lg border border-green-200 dark:border-green-700">
                 <span className="font-medium">Copied!</span>
               </div>
             </div>
           </div>
           <div className="overflow-x-auto">
-            <pre className="p-6 bg-gray-50 text-sm leading-relaxed">
+            <pre className="p-6 bg-gray-50 dark:bg-gray-900 text-sm leading-relaxed">
               <code
-                className={`${className || ''} text-gray-800 font-mono block whitespace-pre`}
+                className={`${className || ''} text-gray-800 dark:text-gray-100 font-mono block whitespace-pre`}
               >
                 {children}
               </code>
@@ -469,32 +472,41 @@ const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
     },
 
     table: ({ children, ...props }) => (
-      <div className="overflow-x-auto my-6 rounded-lg shadow-sm border border-gray-200">
-        <table {...props} className="min-w-full divide-y divide-gray-200">
+      <div className="overflow-x-auto my-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
+        <table
+          {...props}
+          className="min-w-full divide-y divide-gray-200 dark:divide-gray-700"
+        >
           {children}
         </table>
       </div>
     ),
 
     thead: ({ children, ...props }) => (
-      <thead {...props} className="bg-gray-50">
+      <thead {...props} className="bg-gray-50 dark:bg-gray-800">
         {children}
       </thead>
     ),
     tbody: ({ children, ...props }) => (
-      <tbody {...props} className="bg-white divide-y divide-gray-200">
+      <tbody
+        {...props}
+        className="bg-white dark:bg-gray-900 divide-y divide-gray-200 dark:divide-gray-700"
+      >
         {children}
       </tbody>
     ),
     tr: ({ children, ...props }) => (
-      <tr {...props} className="hover:bg-gray-50 transition-colors">
+      <tr
+        {...props}
+        className="hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
+      >
         {children}
       </tr>
     ),
     th: ({ children, ...props }) => (
       <th
         {...props}
-        className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-r last:border-r-0 border-gray-200"
+        className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider border-r last:border-r-0 border-gray-200 dark:border-gray-700"
       >
         {children}
       </th>
@@ -502,7 +514,7 @@ const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
     td: ({ children, ...props }) => (
       <td
         {...props}
-        className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 border-r last:border-r-0 border-gray-200"
+        className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100 border-r last:border-r-0 border-gray-200 dark:border-gray-700"
       >
         {children}
       </td>
@@ -519,7 +531,10 @@ const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
       </ol>
     ),
     li: ({ children, ...props }) => (
-      <li {...props} className="text-gray-700 leading-relaxed">
+      <li
+        {...props}
+        className="text-gray-700 dark:text-gray-300 leading-relaxed"
+      >
         {children}
       </li>
     ),
@@ -532,7 +547,7 @@ const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
         <a
           href={href}
           {...props}
-          className="text-blue-600 hover:text-blue-800 hover:underline transition-colors font-medium"
+          className="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 hover:underline transition-colors font-medium"
           target={isExternal ? '_blank' : undefined}
           rel={isExternal ? 'noopener noreferrer' : undefined}
           data-anchor-link={isAnchor ? 'true' : undefined}
@@ -558,12 +573,15 @@ const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
     },
 
     strong: ({ children, ...props }) => (
-      <strong {...props} className="font-semibold text-gray-900">
+      <strong
+        {...props}
+        className="font-semibold text-gray-900 dark:text-gray-100"
+      >
         {children}
       </strong>
     ),
     em: ({ children, ...props }) => (
-      <em {...props} className="italic text-gray-700">
+      <em {...props} className="italic text-gray-700 dark:text-gray-300">
         {children}
       </em>
     ),
@@ -595,21 +613,21 @@ const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
     ),
     details: ({ children, ...props }) => (
       <details
-        className="my-4 border border-gray-200 rounded-lg overflow-hidden bg-white"
+        className="my-4 border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden bg-white dark:bg-gray-800"
         {...props}
       >
         {children}
       </details>
     ),
     summary: ({ children }) => (
-      <summary className="bg-gray-50 px-4 py-3 cursor-pointer font-medium text-gray-800 hover:bg-gray-100 transition-colors border-b border-gray-200">
+      <summary className="bg-gray-50 dark:bg-gray-700 px-4 py-3 cursor-pointer font-medium text-gray-800 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors border-b border-gray-200 dark:border-gray-600">
         {children}
       </summary>
     ),
   };
 
   return (
-    <div className="prose prose-lg max-w-none">
+    <div className="prose prose-lg dark:prose-invert prose-headings:dark:text-gray-100 prose-p:dark:text-gray-300 prose-strong:dark:text-gray-100 prose-em:dark:text-gray-300 prose-li:dark:text-gray-300 max-w-none">
       <ReactMarkdown
         remarkPlugins={[remarkFrontmatter, remarkGfm, remarkSupersub]}
         rehypePlugins={[

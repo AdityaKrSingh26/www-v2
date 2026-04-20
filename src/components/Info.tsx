@@ -36,7 +36,7 @@ const Info: React.FC = () => {
       {image.caption && (
         <div
           className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/90 
-                   to-transparent p-3 sm:p-4"
+                   to-transparent p-3 sm:p-4 pb-8"
         >
           <p className="text-white font-normal text-sm sm:text-base">
             {image.caption}
@@ -48,14 +48,14 @@ const Info: React.FC = () => {
 
   return (
     <>
-      <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white font-Inter">
+      <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white dark:from-slate-900 dark:to-gray-900 font-Inter">
         <main className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 py-8 sm:py-10 md:py-12 space-y-12 sm:space-y-16 md:space-y-20">
           {/* Hero Section */}
           <section className="container mx-auto px-2 sm:px-4 py-6 sm:py-8 max-w-7xl">
             <motion.div
               className="relative mb-6 sm:mb-8 rounded-2xl sm:rounded-3xl overflow-hidden shadow-xl sm:shadow-2xl 
                        transform hover:scale-[1.01] transition-all duration-500 
-                       ease-out bg-white"
+                       ease-out bg-white dark:bg-gray-800"
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true }}
@@ -107,7 +107,7 @@ const Info: React.FC = () => {
                   <motion.div
                     key={key}
                     className="group relative rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl 
-                  transition-all duration-500 bg-white"
+                  transition-all duration-500 bg-white dark:bg-gray-800"
                     variants={subtleRise}
                     whileHover="hover"
                   >
@@ -170,10 +170,10 @@ const Info: React.FC = () => {
             <div className="space-y-6 sm:space-y-8 md:space-y-10">
               <div
                 className="inline-block px-3 sm:px-4 md:px-6 py-1.5 sm:py-2 md:py-3 bg-gradient-to-r 
-                         from-red-500/10 to-orange-500/10 rounded-full"
+                         from-red-500/10 to-orange-500/10 dark:from-red-500/20 dark:to-orange-500/20 rounded-full"
               >
                 <span
-                  className="text-xs sm:text-sm font-bold text-red-600 tracking-wider 
+                  className="text-xs sm:text-sm font-bold text-red-600 dark:text-red-400 tracking-wider 
                            uppercase"
                 >
                   Empowering Young Learners
@@ -181,7 +181,7 @@ const Info: React.FC = () => {
               </div>
               <motion.h2
                 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black space-y-1 sm:space-y-2 
-                         font-display tracking-tight"
+                         font-display tracking-tight dark:text-white"
                 variants={subtleRise}
               >
                 <span className="font-bold tracking-wider font-Caveat text-5xl sm:text-6xl md:text-7xl lg:text-8xl">
@@ -201,13 +201,13 @@ const Info: React.FC = () => {
               </motion.h2>
 
               <motion.h4
-                className="text-base sm:text-lg md:text-xl font-bold text-gray-800"
+                className="text-base sm:text-lg md:text-xl font-bold text-gray-800 dark:text-gray-200 mb-2"
                 variants={subtleRise}
               >
                 Igniting Curiosity through Project Based Learning
               </motion.h4>
 
-              <p className="text-gray-600 text-sm sm:text-base md:text-lg font-Roboto">
+              <p className="text-gray-600 dark:text-gray-400 text-sm sm:text-base md:text-lg font-Roboto">
                 Empowering Young Minds with Hands-on Learning, Transforming
                 Curiosity into Discovery and Innovation.
               </p>
@@ -228,15 +228,15 @@ const Info: React.FC = () => {
                 {/* Card on Top Left */}
                 {windowWidth >= 270 && (
                   <motion.div
-                    className="absolute top-2 left-2 bg-black/60
+                    className="absolute top-3 left-1 md:-translate-x-1/3 bg-black/60
                     backdrop-blur-sm rounded-lg sm:rounded-xl p-2.5 sm:p-4 md:p-6 shadow-lg 
                     max-w-[180px] sm:max-w-[220px] md:max-w-xs transform hover:scale-105 
                     transition-all duration-300 ease-out z-10 border border-white/50"
-                    whileHover={{ scale: 1.05 }}
+                    whileHover={{ scale: 1 }}
                   >
                     {windowWidth >= 355 && (
                       <>
-                        <h3 className="text-base sm:text-lg md:text-xl font-bold mb-1 md:mb-2 text-gray-100 font-AnonymousPro">
+                        <h3 className="text-base sm:text-lg font-bold mb-1 text-amber-100 font-AnonymousPro">
                           Project Based Learning
                         </h3>
                         <p className="text-white text-xs sm:text-sm leading-tight sm:leading-snug">
@@ -247,7 +247,7 @@ const Info: React.FC = () => {
                       </>
                     )}
                     {windowWidth < 355 && windowWidth >= 250 && (
-                      <h3 className="text-base sm:text-lg md:text-xl font-bold text-gray-100 font-AnonymousPro">
+                      <h3 className="text-base sm:text-lg md:text-xl font-bold text-amber-100 font-AnonymousPro">
                         Project Based Learning
                       </h3>
                     )}
@@ -257,11 +257,11 @@ const Info: React.FC = () => {
                 {/* Card on Bottom Right */}
                 {windowWidth >= 270 && (
                   <motion.div
-                    className="absolute bottom-2 right-2 bg-black/60
+                    className="absolute bottom-3 right-5 md:translate-x-1/3 bg-black/60
                     backdrop-blur-sm rounded-lg sm:rounded-xl p-2.5 sm:p-4 md:p-6 shadow-lg 
                     max-w-[180px] sm:max-w-[220px] md:max-w-xs transform hover:scale-105 
                     transition-all duration-300 ease-out z-10 border border-white/50"
-                    whileHover={{ scale: 1.05 }}
+                    whileHover={{ scale: 1 }}
                   >
                     {windowWidth >= 355 && (
                       <>

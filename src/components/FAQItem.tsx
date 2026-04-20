@@ -13,7 +13,14 @@ const faqItemVariants = {
 };
 
 const faqQuestionButtonVariants = {
-  hover: { scale: 1.02 },
+  initial: { backgroundColor: 'rgba(0,0,0,0)', y: 0 },
+  hover: {
+    scale: 1.02,
+    backgroundColor: 'rgba(0,0,0,0.12)',
+    y: -1,
+    boxShadow: '0 4px 8px rgba(0,0,0,0.1)',
+    transition: { type: 'spring' as const, stiffness: 300, damping: 15 },
+  },
 };
 
 const faqToggleIconVariants = (isOpen: boolean) => ({
@@ -38,22 +45,23 @@ const FAQItem = ({ index, question, answer }: FAQItemProps) => {
   return (
     <motion.div
       key={index}
-      className="border-b last:border-b-0"
+      className="border-b last:border-b-0 border-gray-200 dark:border-gray-700"
       variants={faqItemVariants}
       initial="initial"
       animate="animate"
     >
       <motion.button
-        className="w-full text-left py-4 text-lg font-medium flex justify-between items-center hover:cursor-pointer"
+        className="w-full text-left py-4 px-4 text-lg font-medium flex justify-between items-center hover:cursor-pointer text-gray-900 dark:text-gray-100 rounded-md"
         onClick={toggleFAQ}
         whileHover="hover"
         variants={faqQuestionButtonVariants}
       >
-        {question}
+        <span className="flex-1">{question}</span>
         <motion.span
           variants={faqToggleIconVariants(isOpen)}
           initial="initial"
           animate="animate"
+          className="text-gray-600 dark:text-gray-400 ml-2"
         >
           {isOpen ? '-' : '+'}
         </motion.span>
@@ -64,7 +72,15 @@ const FAQItem = ({ index, question, answer }: FAQItemProps) => {
         animate="animate"
         style={{ overflow: 'hidden' }}
       >
-        <p className="p-4 text-gray-700">{answer}</p>
+        <p
+          className="px-6 pb-4 text-gray-700 dark:text-gray-300"
+          dangerouslySetInnerHTML={{
+            __html: answer.replace(
+              /(https?:\/\/[^\s]+)/g,
+              '<a href="$1" target="_blank" rel="noopener noreferrer" class="text-blue-600 underline hover:text-blue-800 dark:text-blue-400">$1</a>',
+            ),
+          }}
+        />
       </motion.div>
     </motion.div>
   );

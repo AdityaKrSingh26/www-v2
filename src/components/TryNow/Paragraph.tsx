@@ -16,7 +16,6 @@ const Paragraph: React.FC<ParagraphProps> = ({
   title,
   content,
   button,
-  buttonLink,
   links,
 }) => {
   const contentPoints = content.includes('\n')
@@ -33,7 +32,7 @@ const Paragraph: React.FC<ParagraphProps> = ({
     >
       {/* Styled Title */}
       <motion.h2
-        className="text-4xl font-semibold border-b-2 border-gray-300 inline-block pb-2 font-[Caveat]"
+        className="text-4xl font-semibold border-b-2 border-gray-300 dark:border-gray-600 inline-block pb-2 font-[Caveat] dark:text-white"
         variants={paragraphAnimations.text}
       >
         {title}
@@ -41,7 +40,7 @@ const Paragraph: React.FC<ParagraphProps> = ({
 
       {/* Render Content as a List if Multiple Lines Exist */}
       {contentPoints.length > 1 ? (
-        <ul className="text-gray-700 mt-4 list-disc list-inside text-left">
+        <ul className="text-gray-700 dark:text-gray-300 mt-4 list-disc list-inside text-left">
           {contentPoints.map((point, index) => (
             <motion.li
               key={index}
@@ -61,7 +60,7 @@ const Paragraph: React.FC<ParagraphProps> = ({
         </ul>
       ) : (
         <motion.p
-          className="text-gray-700 mt-4"
+          className="text-gray-700 dark:text-gray-300 mt-4"
           variants={paragraphAnimations.text}
         >
           <span
@@ -80,7 +79,9 @@ const Paragraph: React.FC<ParagraphProps> = ({
           className="mt-4 bg-blue-600 text-white font-bold py-2 px-6 rounded-full shadow-lg hover:bg-blue-700 transition"
           whileHover="hover"
           variants={paragraphAnimations.button}
-          onClick={() => window.open(buttonLink, '_blank')}
+          onClick={() =>
+            window.open('https://musicblocks.sugarlabs.org/', '_blank')
+          }
         >
           {button}
         </motion.button>

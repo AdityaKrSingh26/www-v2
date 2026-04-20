@@ -1,20 +1,35 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import logo from '/assets/Icons/logo.svg';
 import NavDropdown from '@/sections/NavDropdown';
 import { navigationData } from '@/constants/Header';
+import DarkModeToggle from '@/components/shared/DarkModeToggle';
 
 const Header: React.FC = () => {
+  const location = useLocation();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
-
+  //
   // Handle scroll effect
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 20);
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  // Handle window resize to close mobile menu on larger screens
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 1024) {
+        setIsMobileMenuOpen(false);
+        setActiveDropdown(null);
+      }
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
 
   // Handle body scroll lock when mobile menu is open
@@ -51,7 +66,9 @@ const Header: React.FC = () => {
     <>
       <header
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-          isScrolled ? 'backdrop-blur-md bg-white/90 shadow-lg' : 'bg-white'
+          isScrolled
+            ? 'backdrop-blur-md bg-white/90 dark:bg-gray-900/80 shadow-lg'
+            : 'bg-white dark:bg-gray-900'
         }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -69,28 +86,28 @@ const Header: React.FC = () => {
               />
             </Link>
 
-            {/* Mobile menu toggle button */}
+            {/* Mobile menu toggle button (visible below lg) */}
             <button
-              className="md:hidden relative w-10 h-10 focus:outline-none z-50"
+              className="lg:hidden relative w-10 h-10 focus:outline-none z-50"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               aria-label="Toggle menu"
               aria-expanded={isMobileMenuOpen}
             >
               <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
                 <span
-                  className={`block w-6 h-0.5 bg-gray-600 transition-all duration-300 ${
+                  className={`block w-6 h-0.5 bg-gray-600 dark:bg-gray-200 transition-all duration-300 ${
                     isMobileMenuOpen
                       ? 'rotate-45 translate-y-1.5'
                       : 'translate-y-[-4px]'
                   }`}
                 />
                 <span
-                  className={`block w-6 h-0.5 bg-gray-600 transition-all duration-300 mt-1 ${
+                  className={`block w-6 h-0.5 bg-gray-600 dark:bg-gray-200 transition-all duration-300 mt-1 ${
                     isMobileMenuOpen ? 'opacity-0' : ''
                   }`}
                 />
                 <span
-                  className={`block w-6 h-0.5 bg-gray-600 transition-all duration-300 mt-1 ${
+                  className={`block w-6 h-0.5 bg-gray-600 dark:bg-gray-200 transition-all duration-300 mt-1 ${
                     isMobileMenuOpen
                       ? '-rotate-45 -translate-y-1.5'
                       : 'translate-y-[4px]'
@@ -99,8 +116,8 @@ const Header: React.FC = () => {
               </div>
             </button>
 
-            {/* Desktop Navigation */}
-            <nav className="hidden md:flex md:items-center md:space-x-4 lg:space-x-8">
+            {/* Desktop Navigation (visible from lg and up) */}
+            <nav className="hidden lg:flex lg:items-center lg:space-x-4">
               {/* Dropdown menus */}
               {Object.entries(navigationData.dropdowns).map(
                 ([key, dropdown]) => (
@@ -117,29 +134,39 @@ const Header: React.FC = () => {
               )}
 
               {/* Regular links */}
-              {navigationData.links.map((link) => (
+              {navigationData.links.map((link) => {
+                const isActive =
+                  location.pathname === link.path ||
+                  location.pathname.startsWith(link.path + '/');
+                return (
+                  <Link
+                    key={link.label}
+                    to={link.path}
+                    className={`px-2 lg:px-2 py-2 font-medium rounded-md
+                              transition-all duration-200 hover:bg-gray-50 dark:hover:bg-gray-800 text-sm lg:text-sm whitespace-nowrap
+                              ${isActive ? 'text-blue-600 dark:text-blue-400' : 'text-gray-700 dark:text-gray-200 hover:text-blue-600'}`}
+                    onClick={handleNavigation}
+                  >
+                    {link.label}
+                  </Link>
+                );
+              })}
+
+              <div className="flex items-center gap-3">
+                <DarkModeToggle />
+
+                {/* CTA Button (slightly reduced padding at lg so it fits tighter layouts) */}
                 <Link
-                  key={link.label}
-                  to={link.path}
-                  className="px-2 lg:px-3 py-2 text-gray-700 hover:text-blue-600 font-medium rounded-md
-                            transition-all duration-200 hover:bg-gray-50 text-sm lg:text-base"
+                  to="/try-sugar"
+                  className="inline-flex items-center px-3 lg:px-4 py-2 rounded-full font-semibold text-white
+                            bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800
+                            transition-all duration-300 transform hover:scale-105 hover:shadow-lg
+                            focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 text-sm"
                   onClick={handleNavigation}
                 >
-                  {link.label}
+                  TRY NOW
                 </Link>
-              ))}
-
-              {/* CTA Button */}
-              <Link
-                to="/try-sugar"
-                className="inline-flex items-center px-4 lg:px-6 py-2 lg:py-2.5 rounded-full font-semibold text-white
-                          bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800
-                          transition-all duration-300 transform hover:scale-105 hover:shadow-lg
-                          focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 text-sm lg:text-base"
-                onClick={handleNavigation}
-              >
-                TRY NOW
-              </Link>
+              </div>
             </nav>
           </div>
         </div>
@@ -153,7 +180,7 @@ const Header: React.FC = () => {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
-            className="fixed inset-0 bg-black/30 md:hidden z-40"
+            className="fixed inset-0 bg-black/30 lg:hidden z-40"
             onClick={() => setIsMobileMenuOpen(false)}
           />
         )}
@@ -188,8 +215,7 @@ const MobileNavDrawer: React.FC<{
           animate={{ opacity: 1, x: 0 }}
           exit={{ opacity: 0, x: '100%' }}
           transition={{ type: 'tween', duration: 0.3 }}
-          className="fixed md:hidden top-0 right-0 bottom-0 w-[80%] max-w-sm bg-white shadow-xl z-40
-                    flex flex-col h-full"
+          className="fixed lg:hidden top-0 right-0 bottom-0 w-[80%] max-w-sm bg-white dark:bg-gray-900 shadow-xl z-40 flex flex-col h-full"
         >
           <div className="flex flex-col h-full">
             {/* Space to avoid overlay with main header */}
@@ -207,7 +233,7 @@ const MobileNavDrawer: React.FC<{
                           setActiveDropdown(activeDropdown === key ? null : key)
                         }
                         className="flex items-center justify-between w-full text-left px-2 py-2
-                              text-gray-700 font-medium rounded-lg hover:bg-gray-50"
+                              text-gray-700 dark:text-gray-200 font-medium rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800"
                         aria-expanded={activeDropdown === key}
                       >
                         <span>{dropdown.label}</span>
@@ -238,17 +264,25 @@ const MobileNavDrawer: React.FC<{
                             className="overflow-hidden"
                           >
                             <div className="pl-4 space-y-1 pb-2">
-                              {dropdown.items.map((item) => (
-                                <Link
-                                  key={item.path}
-                                  to={item.path}
-                                  onClick={onClose}
-                                  className="flex items-center px-4 py-2 text-sm text-gray-600
-                                      rounded-lg hover:bg-gray-50 hover:text-blue-600"
-                                >
-                                  {item.label}
-                                </Link>
-                              ))}
+                              {dropdown.items.map((item) => {
+                                const isItemActive =
+                                  window.location.pathname === item.path ||
+                                  window.location.pathname.startsWith(
+                                    item.path + '/',
+                                  );
+                                return (
+                                  <Link
+                                    key={item.path}
+                                    to={item.path}
+                                    onClick={onClose}
+                                    className={`flex items-center px-4 py-2 text-sm rounded-lg
+                                        hover:bg-gray-50 dark:hover:bg-gray-800 hover:text-blue-600
+                                        ${isItemActive ? 'text-blue-600 dark:text-blue-400 bg-gray-50 dark:bg-gray-800' : 'text-gray-600 dark:text-gray-300'}`}
+                                  >
+                                    {item.label}
+                                  </Link>
+                                );
+                              })}
                             </div>
                           </motion.div>
                         )}
@@ -258,22 +292,31 @@ const MobileNavDrawer: React.FC<{
                 )}
 
                 {/* Regular links */}
-                {navigationData.links.map((link) => (
-                  <Link
-                    key={link.label}
-                    to={link.path}
-                    onClick={onClose}
-                    className="block px-4 py-2 text-gray-700 font-medium rounded-lg
-                            hover:bg-gray-50 hover:text-blue-600"
-                  >
-                    {link.label}
-                  </Link>
-                ))}
+                {navigationData.links.map((link) => {
+                  const isActive =
+                    window.location.pathname === link.path ||
+                    window.location.pathname.startsWith(link.path + '/');
+                  return (
+                    <Link
+                      key={link.label}
+                      to={link.path}
+                      onClick={onClose}
+                      className={`block px-4 py-2 font-medium rounded-lg
+                              hover:bg-gray-50 dark:hover:bg-gray-800 hover:text-blue-600
+                              ${isActive ? 'text-blue-600 dark:text-blue-400 bg-gray-50 dark:bg-gray-800' : 'text-gray-700 dark:text-gray-200'}`}
+                    >
+                      {link.label}
+                    </Link>
+                  );
+                })}
+              </div>
+              <div className="px-4 py-2">
+                <DarkModeToggle />
               </div>
             </div>
 
             {/* CTA button footer */}
-            <div className="p-4 border-t border-gray-200 sticky bottom-0 bg-white">
+            <div className="p-4 border-t border-gray-200 dark:border-gray-700 sticky bottom-0 bg-white dark:bg-gray-900">
               <Link
                 to="/try-sugar"
                 onClick={onClose}

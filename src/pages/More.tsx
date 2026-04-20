@@ -10,6 +10,8 @@ import { motion } from 'framer-motion';
 import Header from '@/sections/Header';
 import Footer from '@/sections/Footer';
 import MarkdownRenderer from '@/utils/MarkdownRenderer';
+import MorePageSkeleton from '@/components/skeletons/MorePageSkeleton';
+import { ArrowLeft } from 'lucide-react';
 
 const MorePage: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -115,9 +117,11 @@ const MorePage: React.FC = () => {
 
   if (isLoading) {
     return (
-      <div className="container mx-auto px-4 py-16 flex justify-center items-center min-h-screen">
-        <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-blue-600"></div>
-      </div>
+      <>
+        <Header />
+        <MorePageSkeleton />
+        <Footer />
+      </>
     );
   }
 
@@ -129,29 +133,18 @@ const MorePage: React.FC = () => {
         <div className="mb-8">
           <Link
             to="/"
-            className="text-blue-600 hover:underline mb-2 inline-block"
+            className="text-blue-600 hover:no-underline mb-2 inline-block"
           >
             <motion.button
-              className="mb-6 px-4 py-2 flex items-center text-blue-600 hover:text-blue-700 transition-colors rounded-md hover:bg-blue-50"
+              className="mb-6 px-4 py-2 flex items-center text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition-colors rounded-md hover:bg-blue-50 dark:hover:bg-blue-900/30"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-5 w-5 mr-2"
-                viewBox="0 0 20 20"
-                fill="currentColor"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M9.707 14.707a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 1.414L7.414 9H15a1 1 0 110 2H7.414l2.293 2.293a1 1 0 010 1.414z"
-                  clipRule="evenodd"
-                />
-              </svg>
+              <ArrowLeft className="h-5 w-5 mr-2" />
               Back to Home
             </motion.button>
           </Link>
-          <h2 className="text-3xl font-bold border-b-2 border-red-500 pb-2">
+          <h2 className="text-3xl font-bold border-b-2 border-red-500 pb-2 text-gray-900 dark:text-gray-100">
             {page ? page.title : 'Page Not Found'}
           </h2>
         </div>
@@ -159,7 +152,7 @@ const MorePage: React.FC = () => {
         <div className="flex flex-col md:flex-row gap-8">
           {/* Sidebar Navigation */}
           <div className="md:w-1/4">
-            <div className="bg-gray-50 p-4 rounded-lg shadow-md">
+            <div className="bg-gray-50 dark:bg-gray-800 p-4 rounded-lg shadow-md">
               {/* Category Navigation */}
               <div className="mb-6">
                 <h3 className="font-bold text-xl mb-2">Categories</h3>
@@ -171,7 +164,7 @@ const MorePage: React.FC = () => {
                       className={`px-3 py-1 rounded-full text-sm ${
                         activeCategory === category
                           ? 'bg-blue-600 text-white'
-                          : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                          : 'bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600'
                       }`}
                     >
                       {category}
@@ -191,10 +184,10 @@ const MorePage: React.FC = () => {
                   <li key={linkPage.slug}>
                     <Link
                       to={`/more/${linkPage.slug}`}
-                      className={`block p-2 rounded hover:bg-gray-100 transition ${
+                      className={`block p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 transition ${
                         linkPage.slug === page?.slug
-                          ? 'bg-red-100 text-red-600 font-medium'
-                          : 'text-gray-700'
+                          ? 'bg-red-100 text-red-600 font-medium dark:bg-red-900/40 dark:text-red-300'
+                          : 'text-gray-700 dark:text-gray-300'
                       }`}
                     >
                       {linkPage.title}
@@ -213,7 +206,7 @@ const MorePage: React.FC = () => {
             transition={{ duration: 0.5 }}
             key={page?.slug}
           >
-            <div className="bg-white rounded-lg shadow-md p-6">
+            <div className="bg-white dark:bg-gray-900 rounded-lg shadow-md p-6 text-gray-900 dark:text-gray-100">
               {page ? (
                 <div className="prose prose-lg max-w-none">
                   <MarkdownRenderer

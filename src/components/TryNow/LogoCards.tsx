@@ -1,11 +1,13 @@
 import { motion } from 'framer-motion';
 import { logoCardAnimations } from '@/styles/Animations';
 
-interface LogoCard {
+export interface LogoCard {
   logo: string;
   title: string;
-  description: string[];
+  description?: string[];
   buttons?: { text: string; link: string }[];
+  onClick?: () => void;
+  selected?: boolean;
 }
 
 const LogoCards = ({ data }: { data: LogoCard[] }) => {
@@ -14,7 +16,7 @@ const LogoCards = ({ data }: { data: LogoCard[] }) => {
       {data.map((card, index) => (
         <motion.div
           key={index}
-          className="bg-white shadow-lg rounded-xl p-6 flex flex-col items-center text-center border border-blue-500"
+          className="bg-white dark:bg-gray-800 shadow-lg rounded-xl p-6 flex flex-col items-center text-center border border-blue-500 dark:border-blue-400"
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, amount: 0.2 }}
@@ -32,14 +34,16 @@ const LogoCards = ({ data }: { data: LogoCard[] }) => {
           </motion.div>
 
           {/* Title */}
-          <h3 className="text-xl font-bold text-blue-600 mt-4">{card.title}</h3>
+          <h3 className="text-xl font-bold text-blue-600 dark:text-blue-400 mt-4">
+            {card.title}
+          </h3>
 
           {/* Divider */}
-          <hr className="w-full my-3 border-gray-300" />
+          <hr className="w-full my-3 border-gray-300 dark:border-gray-600" />
 
           {/* Description */}
-          <ul className="text-gray-600 text-sm text-left list-disc list-inside">
-            {card.description.map((point, i) => (
+          <ul className="text-gray-600 dark:text-gray-300 text-sm text-left list-disc list-inside">
+            {card.description?.map((point, i) => (
               <li key={i}>{point}</li>
             ))}
           </ul>

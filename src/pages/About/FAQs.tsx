@@ -1,6 +1,6 @@
 import Header from '@/sections/Header';
 import Footer from '@/sections/Footer';
-import { useEffect, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { stats } from '@/constants/Stats';
 import faqs, { FAQ_CATEGORIES } from '@/constants/aboutUs/faqs';
 import { quickAnswers } from '@/constants/aboutUs/quickanswers';
@@ -17,18 +17,15 @@ import FAQItem from '@/components/FAQItem';
 
 const FAQs = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
-  const [filteredFaqs, setFilteredFaqs] = useState(faqs);
 
-  useEffect(() => {
-    const filtered =
-      selectedCategory === 'all'
-        ? faqs
-        : faqs.filter((faq) => faq.category === selectedCategory);
-    setFilteredFaqs(filtered);
+  const filteredFaqs = useMemo(() => {
+    return selectedCategory === 'all'
+      ? faqs
+      : faqs.filter((faq) => faq.category === selectedCategory);
   }, [selectedCategory]);
 
   return (
-    <div className="min-h-screen bg-white text-gray-900">
+    <div className="min-h-screen bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100">
       <Header />
       <main className="container mx-auto p-4">
         {/* Top FAQs Section */}
@@ -46,13 +43,13 @@ const FAQs = () => {
               variants={slideInLeft}
             >
               <motion.h1
-                className="text-4xl font-bold"
+                className="text-4xl font-bold text-gray-900 dark:text-white"
                 variants={faqPageAnimations.headingText}
               >
                 FAQs
               </motion.h1>
               <motion.p
-                className="text-gray-600 mt-2 text-lg"
+                className="text-gray-600 dark:text-gray-300 mt-2 text-lg"
                 variants={faqPageAnimations.paragraphText}
               >
                 Have questions? Here you'll find the answers most valued by our
@@ -88,7 +85,7 @@ const FAQs = () => {
             variants={fadeIn}
           >
             <motion.h2
-              className="text-3xl font-bold mb-6"
+              className="text-3xl font-bold mb-6 text-gray-900 dark:text-white"
               variants={headerReveal}
             >
               Quick Answers
@@ -100,20 +97,20 @@ const FAQs = () => {
               {quickAnswers.map((qa, index) => (
                 <motion.div
                   key={index}
-                  className="bg-white shadow-lg rounded-2xl p-6 flex flex-col items-center border border-gray-200"
+                  className="bg-white dark:bg-gray-800 shadow-lg rounded-2xl p-6 flex flex-col items-center border border-gray-200 dark:border-gray-700"
                   variants={faqPageAnimations.quickAnswerCard}
                   whileHover="hover"
                   whileTap="tap"
                 >
                   <motion.div
-                    className="w-12 h-12 bg-white flex items-center justify-center rounded-lg mb-4"
+                    className="w-12 h-12 bg-white dark:bg-white-700 flex items-center justify-center rounded-lg mb-4"
                     variants={faqPageAnimations.quickAnswerIcon}
                     custom={index}
                   >
                     <img src={qa.image} alt={qa.question} className="w-6 h-6" />
                   </motion.div>
                   <h3 className="font-semibold text-center">{qa.question}</h3>
-                  <p className="text-gray-600 text-sm text-center mt-2">
+                  <p className="text-gray-600 dark:text-gray-400 text-sm text-center mt-2">
                     {qa.answer}
                   </p>
                 </motion.div>
@@ -141,7 +138,7 @@ const FAQs = () => {
                 className={`px-4 py-2 rounded-full transition-all ${
                   selectedCategory === 'all'
                     ? 'bg-blue-600 text-white cursor-pointer'
-                    : 'bg-gray-200 hover:bg-gray-300 cursor-pointer'
+                    : 'bg-gray-200 text-gray-800 dark:bg-gray-700 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-gray-600 cursor-pointer'
                 }`}
               >
                 All
@@ -153,7 +150,7 @@ const FAQs = () => {
                   className={`px-4 py-2 rounded-full transition-all capitalize ${
                     selectedCategory === category
                       ? 'bg-blue-600 text-white cursor-pointer'
-                      : 'bg-gray-200 hover:bg-gray-300 cursor-pointer'
+                      : 'bg-gray-200 text-gray-800 dark:bg-gray-700 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-gray-600 cursor-pointer'
                   }`}
                 >
                   {category}
@@ -170,7 +167,7 @@ const FAQs = () => {
             variants={faqPageAnimations.faqContainer}
           >
             <motion.h2
-              className="text-3xl font-bold mb-6 capitalize"
+              className="text-3xl font-bold mb-6 capitalize text-gray-900 dark:text-white"
               variants={headerReveal}
             >
               {selectedCategory === 'all'
@@ -178,7 +175,7 @@ const FAQs = () => {
                 : `${selectedCategory} FAQs`}
             </motion.h2>
             <motion.div
-              className="bg-white shadow-lg rounded-lg p-6"
+              className="bg-white dark:bg-gray-800 shadow-lg rounded-lg p-6"
               variants={subtleRise}
             >
               {filteredFaqs.length > 0 ? (
@@ -191,7 +188,7 @@ const FAQs = () => {
                   />
                 ))
               ) : (
-                <p className="text-center text-gray-600 py-4">
+                <p className="text-center text-gray-600 dark:text-gray-400 py-4">
                   No FAQs found for this category.
                 </p>
               )}
